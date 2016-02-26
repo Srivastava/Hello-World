@@ -31,18 +31,18 @@ for line in sys.stdin.readlines():
 
 #file=open('PlanetData.txt','r')
 #x,y,z,vx,vy,vz=(raw_input('>> Input x y Z, VX VY VZ corrdinates and velocity and angle').split())
-    x,y,z,vx,vy,vz,Year=fs
+    x,y,z,vx,vy,vz,N=fs
     x=np.float128(x)
     y=np.float128(y)
     z=np.float128(z)
     vx=np.float128(vx)
     vy=np.float128(vy)
     vz=np.float128(vz)
-    Year=np.float128(Year)
+    N=np.float128(N)
 
 #print x
 
-    N=60000
+
     dt=1.0
 
     t=0
