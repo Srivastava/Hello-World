@@ -8,6 +8,8 @@ for i in range(1,len(message)):
 print("\nEnd")'''
 
 
+
+
 message =raw_input('Input your message ')
 
 
