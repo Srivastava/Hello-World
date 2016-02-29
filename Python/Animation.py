@@ -7,6 +7,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.animation as animation
 
+
+
 GM =0.00029632889
 
 def accel(x,y,z,val):
@@ -64,22 +66,35 @@ for line in sys.stdin.readlines():
         a.writerows(values)
     n+=1
 
-allfig = plt.figure(0)
+allfig = plt.figure(facecolor='black')
+plt.gca().patch.set_facecolor('black')
 ax1=Axes3D(allfig)
-line,=ax1.plot([],[],[])
+#line,=ax1.plot([],[],[])
 
 m=0
-data = np.genfromtxt('Mercury.csv', delimiter=',',names=['x', 'y', 'z'],invalid_raise=False)
+data = np.genfromtxt('Mercury.csv', delimiter=',', names=['x', 'y', 'z'])
+#for dat in data:
+    #print dat
 
+#line=
+#line=ax1.plot(data['x'], data['y'], data['z'])
+#
+#allfig.axes('off')
+
+ax1.axes.get_yaxis().set_visible(False)
+ax1.axes.get_xaxis().set_visible(False)
+#ax1.axes.get_zaxis().set_visible(False)
+
+#ax1.set_axis_off()
+
+ax1.hold(False)
 def animate(i):
-    global m
-    print i
 
-    line.set_data(data[m][0],data[m][1])
-    line.set_3d_properties(data[m][2])
-    m+=1
-    allfig.canvas.draw()
-    return line
+    #print i
+    ax1.plot([data[i][0]],[data[i][1]],[data[i][2]],linestyle='none', marker='o', markersize=50,color='r')
 
-ani = animation.FuncAnimation(allfig, animate, frames=10,blit=False)
+#for i in range(len(data)):
+    #animate(i)
+
+ani = animation.FuncAnimation(allfig, animate,86, interval=86,blit=False)
 plt.show()
