@@ -6,10 +6,11 @@ import matplotlib.pyplot as plt
 import csv
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_pdf import PdfPages
+import matplotlib.animation as animation
 
 GM =0.00029632889
 GMm =10E-12
-GMS=8.47162837E-8
+GMS=8.46611639e-8
 print GMm
 
 
@@ -63,6 +64,11 @@ def LeapState(x,y,z,vx,vy,vz,n):
     vz=[a+b*0.5*dt for a,b in zip(vz,az)]
 
     return (x,y,z,vx,vy,vz)
+'''def animate(i,data):
+
+    for j in range(0,n):
+        ax1.plot([data[j][0]],[data[j][1]],[data[j][2]],linestyle='none', marker='o', markersize=50,color='r')'''
+
 
 def init(n):
     x=[]
@@ -72,7 +78,11 @@ def init(n):
     vy=[]
     vz=[]
 
-    r=0.00005
+
+
+    r=7.8e-4
+    velocity=(GMS/r)
+    velocity=velocity**(0.5)
     for i in range(0,n):
         '''x.append(-3.283291970503574E-01)
         y.append(1.319124272665584E-01)
@@ -82,12 +92,13 @@ def init(n):
         vy.append(-2.498400337798165E-02)
         vz.append(-5.664021783703915E-04)'''
 
-        x.append(r*np.cos((2*np.pi)/n))
-        y.append(r*np.sin((2*np.pi)/n))
+
+        x.append(r*np.cos((2*np.pi*i)/n))
+        y.append(r*np.sin((2*np.pi*i)/n))
         z.append(0.0)
 
-        vx.append(-r*np.sin((2*np.pi)/n))
-        vy.append(r*np.cos((2*np.pi)/n))
+        vx.append(-velocity*np.sin((2*np.pi*i)/n))
+        vy.append(velocity*np.cos((2*np.pi*i)/n))
         vz.append(0.0)
 
     #print x[0],y[0]
@@ -123,16 +134,53 @@ def main():
 
     data = np.genfromtxt('Data.csv', delimiter=',',names=['x', 'y', 'z'],invalid_raise=False)
 
+    #print data
     fig = plt.figure(0)
-    ax=Axes3D(fig)
-    ax.plot(data['x'],data['y'],data['z'], color='r',label=Planets[1])
-    plt.title(Planets[1])
-    xLabel = ax.set_xlabel('X Au')
-    yLabel = ax.set_ylabel('Y Au')
-    zLabel = ax.set_zlabel('Z Au')
-    fig.savefig(Planets[1]+'.png',bbox_inches='tight')
+    ax1=Axes3D(fig)
 
+    #ax1.plot(data['x'],data['y'],0, color='r',label=Planets[1],marker='o',linestyle='none')
+    plt.title(Planets[1])
+    xLabel = ax1.set_xlabel('X Au')
+    yLabel = ax1.set_ylabel('Y Au')
+    zLabel = ax1.set_zlabel('Z Au')
+
+    ax1.set_xlim(-7.8e-4,7.8e-4)
+    ax1.set_ylim(-7.8e-4,7.8e-4)
+
+
+
+
+
+
+    #for i in range(len(data)):
+        #animate(i)
+    ax1.hold(False)
+    def animate(i):
+        print i
+        plt.cla()
+        ax1.grid(b=False)
+        ax1.set_xticks([])
+        ax1.set_yticks([])
+        ax1.set_zticks([])
+
+
+
+        #ax1.hold(False)
+        #print i
+        for j in range(i*n,(i+1)*n):
+            plt.hold(True)
+            #print j
+            ax1.plot([data[j][0]],[data[j][1]],[data[j][2]],linestyle='none', marker='o', markersize=10,c='r')
+            #plt.hold(False)
+        #plt.hold(False)
+    ani = animation.FuncAnimation(fig, animate,n, interval=n,blit=False)
+
+    ax1.axis('off')
     plt.show();
+
+    #fig.savefig(Planets[1]+'.png',bbox_inches='tight')
+
+
 main()
 
 #plt.show(block=True)

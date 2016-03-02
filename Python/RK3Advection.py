@@ -10,9 +10,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math as mt
 
-dx=0.01
+dx=0.001
 #dt=0.001
-timeFinal=float(100)
+timeFinal=float(10)
 #dt=1.0/timeFinal
 xFinal=1
 
@@ -22,8 +22,8 @@ print dt
 
 nx=int(1/dx)
 #a=0.005
-a=0.005
-u=0.0
+a=0.0
+u=0.5
 
 Ti=sp.zeros([nx])
 T=sp.zeros([nx])
@@ -46,9 +46,10 @@ def analytical(tval):
     #Ta[1:-1]=sin(10*pi*x[1:-1])*exp(-100*pi*pi*alpha*tval)+sin(20*pi*x[1:-1])*exp(-400*pi*pi*alpha*tval);
 
     for i in range(nx):
-        if(i*dx<=0.5 and i*dx>=0.2):
-            Ta[i]=np.sin(10*np.pi*i*dx)*mt.exp(-100*np.pi*np.pi*a*tval)+np.sin(20*np.pi*i*dx)*mt.exp(-400*np.pi*np.pi*a*tval);
-
+        if(i*dx-u*tval<=0.5 and i*dx-u*tval>=0.2):
+            Ta[i]=np.sin(10*np.pi*(i*dx-u*tval))+np.sin(20*np.pi*(i*dx-u*tval))
+        elif (i*dx<u*tval):
+            Ta[i]=2;
     return Ta
 
 
@@ -59,8 +60,8 @@ def evolve(T,Ti):
     k3=sp.zeros([nx])
 
 
-    Ti[0]=0
-    Ti[nx-1]=0
+    Ti[0]=2
+
     #k1[1:-1]=a*(Ti[2 : ] - 2*Ti[1:-1] + Ti[:-2])/dx2 - u*0.5*(Ti[2 : ]-Ti[:-2])/(dx)
     #k2[1:-1]=Ti[1:-1]+k1[1:-1]*(8.0/15.0)*dt
     #k3[1:-1]=Ti[1:-1]+dt*(0.25)*k1[1:-1] + (5.0/12.0)*dt*k2[1:-1]
@@ -75,8 +76,7 @@ def evolve(T,Ti):
     k3[1:-1]=a*(Ti[2 : ] - 2*Ti[1:-1] + Ti[:-2])/dx2 - u*0.5*(Ti[2 : ]-Ti[:-2])/(dx)
     Ti[1:-1]=Ti[1:-1]+(3.0/4.0)*dt*k3[1:-1]-(5.0/12.0)*dt*k2[1:-1]
 
-    Ti[0]=0
-    Ti[nx-1]=0
+
 
 
     #T[1:-1]=Ti[1:-1]+dt*(0.25*k1[1:-1]+0.75*k3[1:-1])
@@ -89,7 +89,7 @@ fig,ax=plt.subplots()
 
 points, = ax.plot(x,Ti,color='r',label='Numerical Solution')
 points1,=ax.plot(x,Ti,color='b',label='Analytical Solution')
-
+plt.ylim([-3,3])
 ax.legend([points,points1], [points.get_label(),points1.get_label()])
 text=plt.text(0.08,1,"Pure difussion at t=0",ha='center',va='top',transform = ax.transAxes,fontsize='18')
 
@@ -110,7 +110,7 @@ for m in range(0, timeStep):
     timeEl=m*dt
 
     if(timeEl==0 or timeEl==0.01 or timeEl==3):
-        fig.savefig('Figure'+str(timeEl)+'.png')
+        fig.savefig('FigureA'+str(timeEl)+'.png')
 
 
 
@@ -121,7 +121,7 @@ for m in range(0, timeStep):
     plt.xlabel('x')
     plt.ylabel('T(x)')
     text.set_text("t=: {0}".format(timeEl))
-    plt.title('Pure difussion using RK3 in time and Central Difference in Space')
+    plt.title('Pure Advection using RK3 in time and Central Difference in Space')
 
     plt.pause(0.000000005)
 
