@@ -8,7 +8,9 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_pdf import PdfPages
 
 GM =0.00029632889
-print GM
+GMm =10E-12
+GMS=8.47162837E-8
+print GMm
 
 
 def accel(x,y,z,n):
@@ -17,11 +19,23 @@ def accel(x,y,z,n):
     az=[]
 
     for i in range (0,n):
-        dist=(x[i]*x[i]+y[i]*y[i]+z[i]*z[i])**(-1.5)
 
-        ax.append(-GM*x[i]*dist)
-        ay.append(-GM*y[i]*dist)
-        az.append(-GM*z[i]*dist)
+        for j in range(0,n):
+            distS=(x[i]*x[i]+y[i]*y[i]+z[i]*z[i])**(-1.5)
+            aX=-GMS*x[i]*distS
+            aY=-GMS*y[i]*distS
+            aZ=-GMS*z[i]*distS
+            if(i!=j):
+                dist=((x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j])+(z[i]-z[j])*(z[i]-z[j]))**(-1.5)
+
+                aX+=-GMm*(x[i]-x[j])*dist
+                aY+=-GMm*(y[i]-y[j])*dist
+                aZ+=-GMm*(z[i]-z[j])*dist
+
+
+        ax.append(aX)
+        ay.append(aY)
+        az.append(aZ)
 
     return (ax,ay,az)
 
@@ -70,9 +84,11 @@ def init(n):
 
         x.append(r*np.cos((2*np.pi)/n))
         y.append(r*np.sin((2*np.pi)/n))
+        z.append(0.0)
 
         vx.append(-r*np.sin((2*np.pi)/n))
         vy.append(r*np.cos((2*np.pi)/n))
+        vz.append(0.0)
 
     #print x[0],y[0]
     return (x,y,z,vx,vy,vz)

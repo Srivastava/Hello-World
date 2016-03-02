@@ -9,8 +9,8 @@ import scipy as sp
 import numpy as np
 import matplotlib.pyplot as plt
 
-dx=0.1
-dt=0.1
+dx=0.001
+dt=0.001
 timeStep=100000
 
 nx=int(10/dx)
