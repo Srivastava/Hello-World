@@ -35,10 +35,6 @@ for i in range(nx):
         Ti[i]=np.sin(20*np.pi*i*dx)+np.sin(10*np.pi*i*dx)
         #Ti[i]=a*np.sin(2*np.pi*i*dx)
 
-
-
-
-
 def analytical(tval):
     xval=np.linspace(0, xFinal, nx)
     Ta=sp.zeros([nx])
@@ -109,7 +105,7 @@ for m in range(0, timeStep):
 
     timeEl=m*dt
 
-    if(timeEl==0 or timeEl==0.01 or timeEl==3):
+    if(timeEl==0 or timeEl==0.01 or timeEl==0.5 or timeEl==1 or  timeEl==3):
         fig.savefig('FigureA'+str(timeEl)+'.png')
 
 

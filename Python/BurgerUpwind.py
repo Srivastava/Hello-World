@@ -10,8 +10,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 dx=0.01
-dt=0.001
+
+timeFinal=float(100)
+#dt=1.0/timeFinal
+
+
 timeStep=10000
+dt=timeFinal/timeStep
 
 nx=int(10/dx)
 #a=0.0055
@@ -32,8 +37,7 @@ for i in range(nx):
         #Ti[i]=a*np.sin(2*np.pi*i*dx)
 
 
-x=np.linspace(0, 10, nx)
-fig,ax=plt.subplots()
+
 
 def evolve(T,Ti):
     global nx,a
@@ -49,13 +53,13 @@ def evolve(T,Ti):
     #k3[1:-1]=Ti[1:-1]+dt*(0.25)*k1[1:-1] + (5.0/12.0)*dt*k2[1:-1]
     #k1[1:-1]=dt*(T[1:-1]+dt)
 
-    k1[1:-1]=-0.5*Ti[1 : -1]*(Ti[1 :-1 ]-Ti[:-2])/(dx)
+    k1[1:-1]=-0.5*(Ti[1 :-1 ]*Ti[1 :-1 ]-Ti[:-2]*Ti[:-2])/(dx)
     Ti[1:-1]=Ti[1:-1]+(8.0/15.0)*dt*k1[1:-1]
 
-    k2[1:-1]=-0.5*Ti[1 : -1]*(Ti[1 :-1 ]-Ti[:-2])/(dx)
+    k2[1:-1]=-0.5*(Ti[1 :-1 ]*Ti[1 :-1 ]-Ti[:-2]*Ti[:-2])/(dx)
     Ti[1:-1]=Ti[1:-1]+(5.0/12.0)*dt*k2[1:-1]-(17.0/60.0)*dt*k1[1:-1]
 
-    k3[1:-1]=-0.5*Ti[1 : -1]*(Ti[1 :-1 ]-Ti[:-2])/(dx)
+    k3[1:-1]=-0.5*(Ti[1 :-1 ]*Ti[1 :-1 ]-Ti[:-2]*Ti[:-2])/(dx)
     Ti[1:-1]=Ti[1:-1]+(3.0/4.0)*dt*k3[1:-1]-(5.0/12.0)*dt*k2[1:-1]
 
     #Ti[0]=1
@@ -68,19 +72,40 @@ def evolve(T,Ti):
     #Ti = sp.copy(T)
     return Ti
 
+x=np.linspace(0, 10, nx)
+fig,ax=plt.subplots()
+
+points, = ax.plot(x,Ti,color='r',label='Numerical Solution')
+#text=plt.text(0.9,1,"Burgers Equation Using Upwind at t=0",ha='center',va='top',transform = ax.transAxes,fontsize='18')
 plt.hold(False)
-for m in range(1, timeStep):
-    points, = ax.plot(x,Ti)
+for m in range(0, timeStep+1):
+
     Ti=evolve(T,Ti)
-    print Ti
-    points.set_data(x,Ti)
+    #print Ti
 
+        #plt.hold(True)
+
+    timeEl=m*dt
     plt.xlabel('x')
-    plt.ylabel('T(x)')
-    plt.title('Plot of Pure difussion for Explicit Euler in Time and 2nd Order Central Difference Scheme in Space ')
-    #plt.show()
-    plt.pause(0.0000005)
+    plt.ylabel('u(x)')
+    plt.grid(True)
+    #text.set_text("t=: {0}".format(timeEl))
+    #plt.title('Burgers Equation using RK3 in time and 1st Order Upwind in Space')
 
-    #plt.plot(x,Ti)
+    if(timeEl==0 or timeEl==0.5 or timeEl==1 or timeEl==1.5 or  timeEl==5 or timeEl==10):
+        points.set_data(x,Ti)
+
+        fig.savefig('FigureBurgerUV'+str(timeEl)+'.png',dpi=1200)
+
+
+
+
+
+
+        #plt.hold(False)
+
+
+
+    plt.pause(0.000000005)
 
     #print "Computing u for m =", m

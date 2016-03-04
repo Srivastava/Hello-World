@@ -65,7 +65,6 @@ def LeapState(x,y,z,vx,vy,vz,n):
 
     return (x,y,z,vx,vy,vz)
 '''def animate(i,data):
-
     for j in range(0,n):
         ax1.plot([data[j][0]],[data[j][1]],[data[j][2]],linestyle='none', marker='o', markersize=50,color='r')'''
 
@@ -80,14 +79,13 @@ def init(n):
 
 
 
-    r=7.8e-4
+    r=7.8e-3
     velocity=(GMS/r)
-    velocity=velocity**(0.5)
+    velocity=velocity**(0.5)-0.000005
     for i in range(0,n):
         '''x.append(-3.283291970503574E-01)
         y.append(1.319124272665584E-01)
         z.append(4.095649105518744E-02)
-
         vx.append(-1.608369028928803E-02)
         vy.append(-2.498400337798165E-02)
         vz.append(-5.664021783703915E-04)'''
@@ -107,7 +105,7 @@ def init(n):
 
 Planets=['All Planets','Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto']
 def main():
-    n,t=(raw_input('>> N, T').split())
+    n,t=(raw_input('>> N, T ').split())
     n=np.int64(n)
     t=np.float128(t)
 
@@ -138,25 +136,28 @@ def main():
     fig = plt.figure(0)
     ax1=Axes3D(fig)
 
-    #ax1.plot(data['x'],data['y'],0, color='r',label=Planets[1],marker='o',linestyle='none')
+    #fig2 = plt.figure(1)
+    #ax2=Axes3D(fig2)
+    #ax2.plot(data['x'],data['y'],0, color='r',label=Planets[1])
+    #plt.show()
     plt.title(Planets[1])
     xLabel = ax1.set_xlabel('X Au')
     yLabel = ax1.set_ylabel('Y Au')
     zLabel = ax1.set_zlabel('Z Au')
 
-    ax1.set_xlim(-7.8e-4,7.8e-4)
-    ax1.set_ylim(-7.8e-4,7.8e-4)
+    ax1.set_xlim(-7.8e-2,7.8e-2)
+    ax1.set_ylim(-7.8e-2,7.8e-2)
 
 
 
 
 
-
+    p=np.int64(t)
     #for i in range(len(data)):
         #animate(i)
     ax1.hold(False)
     def animate(i):
-        print i
+        #print i
         plt.cla()
         ax1.grid(b=False)
         ax1.set_xticks([])
@@ -167,13 +168,19 @@ def main():
 
         #ax1.hold(False)
         #print i
-        for j in range(i*n,(i+1)*n):
-            plt.hold(True)
-            #print j
-            ax1.plot([data[j][0]],[data[j][1]],[data[j][2]],linestyle='none', marker='o', markersize=10,c='r')
+        #for j in range(i*n,(i+1)*n):
+        plt.hold(True)
+        aX=data['x']
+        aY=data['y']
+        aZ=data['z']
+
+
+
+        #print j
+        ax1.plot(aX[i*n:(i+1)*n],aY[i*n:(i+1)*n],aZ[i*n:(i+1)*n],linestyle='none', marker='o', markersize=10,c='r')
             #plt.hold(False)
         #plt.hold(False)
-    ani = animation.FuncAnimation(fig, animate,n, interval=n,blit=False)
+    ani = animation.FuncAnimation(fig, animate,np.int64(t), interval=1,blit=False,repeat=True)
 
     ax1.axis('off')
     plt.show();
@@ -182,5 +189,3 @@ def main():
 
 
 main()
-
-#plt.show(block=True)

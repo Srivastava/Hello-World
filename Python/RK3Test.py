@@ -59,7 +59,7 @@ def evolve(T,Ti):
     k3=sp.zeros([nx])
 
 
-    Ti[0]=0
+    Ti[0]=1
     Ti[nx-1]=0
     #k1[1:-1]=a*(Ti[2 : ] - 2*Ti[1:-1] + Ti[:-2])/dx2 - u*0.5*(Ti[2 : ]-Ti[:-2])/(dx)
     #k2[1:-1]=Ti[1:-1]+k1[1:-1]*(8.0/15.0)*dt
@@ -75,7 +75,7 @@ def evolve(T,Ti):
     k3[1:-1]=a*(Ti[2 : ] - 2*Ti[1:-1] + Ti[:-2])/dx2 - u*0.5*(Ti[2 : ]-Ti[:-2])/(dx)
     Ti[1:-1]=Ti[1:-1]+(3.0/4.0)*dt*k3[1:-1]-(5.0/12.0)*dt*k2[1:-1]
 
-    Ti[0]=0
+    Ti[0]=1
     Ti[nx-1]=0
 
 
@@ -84,18 +84,14 @@ def evolve(T,Ti):
     #T[1:-1]=Ti[1:-1]+a*dt*(Ti[2 : ] - 2*Ti[1:-1] + Ti[:-2])/dx2 + u*((Ti[2 : ]+Ti[:-2])/(2*dx))
     #Ti = sp.copy(T)
     return Ti
+
+
 x=np.linspace(0, xFinal, nx)
 fig,ax=plt.subplots()
-
-points, = ax.plot(x,Ti,color='r',label='Numerical Solution')
-points1,=ax.plot(x,Ti,color='b',label='Analytical Solution')
-
-ax.legend([points,points1], [points.get_label(),points1.get_label()])
-text=plt.text(0.08,1,"Pure difussion at t=0",ha='center',va='top',transform = ax.transAxes,fontsize='18')
-
+text=plt.text(0.9,1,"Pure Diffusion at t=0",ha='center',va='top',transform = ax.transAxes,fontsize='18')
 plt.hold(False)
-
-for m in range(0, timeStep):
+ax.set_ylim(-2 , 2)
+for m in range(0, timeStep+1):
 
 
     Ta=analytical(m*dt)
@@ -103,14 +99,17 @@ for m in range(0, timeStep):
 
 
 
-    points.set_data(x,Ti)
-    points1.set_data(x,Ta)
+    #points.set_data(x,Ti)
+    #points1.set_data(x,Ta)
     #plt.hold(True)
 
     timeEl=m*dt
 
-    if(timeEl==0 or timeEl==0.01 or timeEl==3):
-        fig.savefig('Figure'+str(timeEl)+'.png')
+        ax.hold(True)
+        ax.set_ylim(-2 , 2)
+        +++
+    ##if(timeEl==100):
+
 
 
 
@@ -118,12 +117,19 @@ for m in range(0, timeStep):
 
     #plt.hold(False)
 
-    plt.xlabel('x')
-    plt.ylabel('T(x)')
-    text.set_text("t=: {0}".format(timeEl))
-    plt.title('Pure difussion using RK3 in time and Central Difference in Space')
 
-    plt.pause(0.000000005)
+
+
+#ax.legend([points,points1], [points.get_label(),points1.get_label()])
+#text=plt.text(0.08,1,"Pure difussion at t=0",ha='center',va='top',transform = ax.transAxes,fontsize='18')
+
+plt.xlabel('x')
+plt.ylabel('T(x)')
+text.set_text("t=: {0}".format(1))
+
+plt.title('Pure difussion using RK3 in time and Central Difference in Space')
+fig.savefig('FigureDif'+str(4)+'.png')
+plt.show()
 
     #plt.plot(x,Ti)
 
