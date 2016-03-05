@@ -45,7 +45,7 @@ def accel(x,y,z,n):
 
 def LeapState(x,y,z,vx,vy,vz,n):
 
-    dt =1
+    dt =0.01
 
     ax,ay,az=accel(x,y,z,n)
 
@@ -85,7 +85,7 @@ def init(n):
     for i in range(0,n):
         x1,x2,x3,x4,x5,x6,x7=np.random.uniform(0.0,1.0,7)
         #print x1,x2,x3,x4,x5,x6,x7
-        r=(x1**(-2.0/3.0)-1)**(-0.5)
+        r=((x1**(-2.0/3.0))-1)**(-0.5)
 
         zp=(1-2*x2)*r
         xp=((r*r-zp*zp)**(0.5))*np.cos(2*np.pi*x3)
@@ -96,10 +96,11 @@ def init(n):
         y.append(yp)
         z.append(zp)
 
-        Ve=(2**(0.5))*(1+r*r)*(-0.25)
+        Ve=(2**(0.5))*((1+r*r))*(-0.25)
 
         while(0.1*x5>=x4*x4*(1-x4*x4)**3.5):
             x4,x5=np.random.uniform(0.0,1.0,2)
+            #print x4 ,x5
 
         q=x4
         V=Ve*q
@@ -190,7 +191,7 @@ def main():
 
 
         #print j
-        ax1.plot(aX[i*n:(i+1)*n],aY[i*n:(i+1)*n],aZ[i*n:(i+1)*n],linestyle='none', marker='o', markersize=10,c='r')
+        ax1.plot(aX[i*n:(i+1)*n],aY[i*n:(i+1)*n],aZ[i*n:(i+1)*n],linestyle='none', marker='o', markersize=1,c='r')
             #plt.hold(False)
         #plt.hold(False)
     ani = animation.FuncAnimation(fig, animate,np.int64(t), interval=10,blit=False,repeat=True)
