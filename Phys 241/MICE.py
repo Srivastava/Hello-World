@@ -9,8 +9,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.animation as animation
 
-GM =0.00029632889 * 10E11
-#GM = 4.498309551e-8
+#GM =0.00029632889 * 10E11
+GM = 4.9212E-13
 #GM =1E-3
 GMm =10E-12
 GMS=8.46611639e-8
@@ -29,9 +29,9 @@ def rotation (x,y,z,nx,ny,nz,angle):
     yN=[0]*len(x)
     zN=[0]*len(x)
 
-    print a*nx*nx+c ,a*nx*ny-s*nz,a*nx*nz+s*ny
-    print a*nx*ny+s*nz,a*ny*ny+c,a*ny*nz-s*nx
-    print a*nx*nz-s*ny, a*ny*nz+s*nx, a*nz*nz+c
+    #print a*nx*nx+c ,a*nx*ny-s*nz,a*nx*nz+s*ny
+    #print a*nx*ny+s*nz,a*ny*ny+c,a*ny*nz-s*nx
+    #print a*nx*nz-s*ny, a*ny*nz+s*nx, a*nz*nz+c
 
     xN=[(a*nx*nx+c)*p+(a*nx*ny-s*nz)*q+(a*nx*nz+s*ny)*r for p,q,r in zip(x,y,z)]
     yN=[(a*nx*ny+s*nz)*p+(a*ny*ny+c)*q+(a*ny*nz-s*nx)*r for p,q,r in zip(x,y,z)]
@@ -39,9 +39,9 @@ def rotation (x,y,z,nx,ny,nz,angle):
 
 
 
-    print len(xN)
+    '''print len(xN)
     print len(yN)
-    print len(zN)
+    print len(zN)'''
 
     return (xN,yN,zN)
 
@@ -52,7 +52,7 @@ def accel(x,y,z,n):
 
     '''dist11=((x[1]-x[0])*(x[1]-x[0])+(y[1]-y[0])*(y[1]-y[0])+(z[1]-z[0])*(z[1]-z[0]))**(-1.5)
     #print dist11, x[1], x[0], y[1], y[0], z[1], z[0]
-    \
+
     aX11=-GM*(x[1]-x[0])*dist11
     aY11=-GM*(y[1]-y[0])*dist11
     aZ11=-GM*(z[1]-z[0])*dist11
@@ -65,16 +65,16 @@ def accel(x,y,z,n):
     ay[1]=aY11
     az[1]=aZ11'''
 
-    dist11=((x[0]*x[0]+y[0]*y[0]+z[0]*z[0]))**(-1.5)
+    dist11=((x[0]*x[0]+y[0]*y[0]+z[0]*z[0])+10E-7)**(-1.5)
     aX11=-GM*(x[0])*dist11*0.5
     aY11=-GM*(y[0])*dist11*0.5
-    aZ11=GM*(z[0])*dist11*0.5
+    aZ11=-GM*(z[0])*dist11*0.5
 
     ax[0]=aX11
     ay[0]=aY11
     az[0]=aZ11
 
-    dist12=((x[1]*x[1]+y[1]*y[1]+z[1]*z[1]))**(-1.5)
+    dist12=((x[1]*x[1]+y[1]*y[1]+z[1]*z[1])+10E-7)**(-1.5)
     aX12=-GM*(x[1])*dist12*0.5
     aY12=-GM*(y[1])*dist12*0.5
     aZ12=-GM*(z[1])*dist12*0.5
@@ -89,8 +89,8 @@ def accel(x,y,z,n):
         aZ=0
 
 
-        dist=((x[i]-x[0])*(x[i]-x[0])+(y[i]-y[0])*(y[i]-y[0])+(z[i]-z[0])*(z[i]-z[0]))**(-1.5)
-        dist1=((x[i]-x[1])*(x[i]-x[1])+(y[i]-y[1])*(y[i]-y[1])+(z[i]-z[1])*(z[i]-z[1]))**(-1.5)
+        dist=((x[i]-x[0])*(x[i]-x[0])+(y[i]-y[0])*(y[i]-y[0])+(z[i]-z[0])*(z[i]-z[0])+10E-7)**(-1.5)
+        dist1=((x[i]-x[1])*(x[i]-x[1])+(y[i]-y[1])*(y[i]-y[1])+(z[i]-z[1])*(z[i]-z[1])+10E-7)**(-1.5)
 
         aX=-GM*(x[i]-x[0])*dist
         aY=-GM*(y[i]-y[0])*dist
@@ -110,7 +110,7 @@ def accel(x,y,z,n):
 
 def LeapState(x,y,z,vx,vy,vz,n):
 
-    dt =0.00001
+    dt =1E+7
 
     ax,ay,az=accel(x,y,z,n)
 
@@ -142,13 +142,15 @@ def init(npart):
     Rmin=25.0
     e=0.6
     a=float(Rmin/(2*(1-e)))
+    print a
     Ra=a*(1+e)
-    print a,Ra
+    #print a,Ra
     #VelMass=GM*((1+e)/(a-a*e))
     #VelMass=VelMass**0.5
 
-    vel=2*GM*((2.0/Ra) - (1.0/a))
-    vel=vel**0.5
+    #vel=(GM*((2.0/Ra) - (1.0/a)))**0.5
+    vel = (GM*0.5*Rmin*((Ra*(Ra+Rmin))**(-1)))**(0.5)
+
 
     vx.append(0)
     vy.append(vel)
@@ -168,8 +170,8 @@ def init(npart):
 
     for i in range(0,11):
         r=(0.2+0.05*i)*Rmin
-        velocity=(GM/r)
-        velocity=velocity**(0.5)
+        velocity=((GM/r))**0.5
+
         n=12+3*i
         for j in range(0,n):
             x.append(r*np.cos((2*np.pi*j)/n))
@@ -180,30 +182,46 @@ def init(npart):
             vy.append(velocity*np.cos((2*np.pi*j)/n))
             vz.append(0.0)
 
-    x[2:],y[2:],z[2:]=rotation(x[2:],y[2:],z[2:],1.0,0.0,0.0,90.0)
-    vx[2:],vy[2:],vz[2:]=rotation(vx[2:],vy[2:],vz[2:],1.0,0.0,0.0,90.0)
+    x[2:],y[2:],z[2:]=rotation(x[2:],y[2:],z[2:],1.0,0.0,0.0,-15.0)
+    vx[2:],vy[2:],vz[2:]=rotation(vx[2:],vy[2:],vz[2:],1.0,0.0,0.0,-15.0)
+
+    x[2:],y[2:],z[2:]=rotation(x[2:],y[2:],z[2:],0.0,1.0,0.0,90.0)
+    vx[2:],vy[2:],vz[2:]=rotation(vx[2:],vy[2:],vz[2:],0.0,1.0,0.0,90.0)
+
+
 
     x[2:]=[p-Ra for p in x[2:]]
     vy[2:]=[p+vel for p in vy[2:]]
+
 
     for i in range(0,11):
         #print i
         r=(0.2+0.05*i)*Rmin
         #print 0.2+0.05*i
-        velocity=(GM/r)
-        velocity=velocity**(0.5)
-
+        velocity=((GM/r))**0.5
         n=12+3*i
         #print n
         for j in range(0,n):
-            x.append(r*np.cos((2*np.pi*j)/n)+Ra)
+            x.append(r*np.cos((2*np.pi*j)/n))
             y.append(r*np.sin((2*np.pi*j)/n))
             z.append(0.0)
 
             vx.append(-velocity*np.sin((2*np.pi*j)/n))
-            vy.append(-vel+velocity*np.cos((2*np.pi*j)/n))
+            vy.append(velocity*np.cos((2*np.pi*j)/n))
             vz.append(0.0)
-    print len(x),len(y),len(z)
+
+
+    x[299:],y[299:],z[299:]=rotation(x[299:],y[299:],z[299:],1.0,0.0,0.0,-60.0)
+    vx[299:],vy[299:],vz[299:]=rotation(vx[299:],vy[299:],vz[299:],1.0,0.0,0.0,-60.0)
+
+    x[299:],y[299:],z[299:]=rotation(x[299:],y[299:],z[299:],0.0,1.0,0.0,90.0)
+    vx[299:],vy[299:],vz[299:]=rotation(vx[299:],vy[299:],vz[299:],0.0,1.0,0.0,90.0)
+
+
+
+    x[299:]=[p+Ra for p in x[299:]]
+    vy[299:]=[p-vel for p in vy[299:]]
+    #print len(x),len(y),len(z)
 
     return (x,y,z,vx,vy,vz)
 

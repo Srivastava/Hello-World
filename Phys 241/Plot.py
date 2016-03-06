@@ -30,9 +30,9 @@ def animate(i):
     yLabel = ax1.set_ylabel('Y Au')
     zLabel = ax1.set_zlabel('Z Au')
 
-    ax1.set_xlim(-25,25)
-    ax1.set_ylim(-25,25)
-    ax1.set_zlim(-25,25)
+    ax1.set_xlim(-30,30)
+    ax1.set_ylim(-30,30)
+    ax1.set_zlim(-30,30)
     ax1.grid(b=True)
     ax1.axis('off')
 
@@ -44,9 +44,10 @@ def animate(i):
     aZ=data['z']
 
     ax1.hold(True)
-    ax1.plot(aX[i*n:(i+1)*n],aY[i*n:(i+1)*n],aZ[i*n:(i+1)*n],linestyle='none', marker='o', markersize=2,c='r')
+    ax1.plot(aX[i*n:i*n+2],aY[i*n:i*n+2],aZ[i*n:i*n+2],linestyle='none', marker='o', markersize=10,c='b')
+    ax1.plot(aX[i*n+2:(i+1)*n],aY[i*n+2:(i+1)*n],aZ[i*n+2:(i+1)*n],linestyle='none', marker='o', markersize=2,c='r')
 
-ani = animation.FuncAnimation(fig, animate,t, interval=1,blit=False,repeat=False)
+ani = animation.FuncAnimation(fig, animate,t, interval=100,blit=False,repeat=False)
 
 
 plt.show();
