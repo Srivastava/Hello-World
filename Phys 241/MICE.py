@@ -145,21 +145,22 @@ def init(npart):
     a=float(Rmin/(2*(1-e)))
     print a
     Ra=a*(1+e)
+    #Ra=Rmin*(1+e)*((1-e)**(-1))
     #print a,Ra
     #VelMass=GM*((1+e)/(a-a*e))
     #VelMass=VelMass**0.5
 
     #vel=(GM*((2.0/Ra) - (1.0/a)))**0.5
     vel = (GM*0.5*Rmin*((Ra*(Ra+Rmin))**(-1)))**(0.5)
-
-
-    vx.append(0)
-    vy.append(0)
-    vz.append(+vel)
+    #vel =0.5*(GM*(1-e)*(1-e)*((3+e)*Rmin)**(-1))**(0.5)
 
     vx.append(0)
-    vy.append(0)
-    vz.append(-vel)
+    vy.append(vel)
+    vz.append(0)
+
+    vx.append(0)
+    vy.append(-vel)
+    vz.append(0)
 
     x.append(-Ra)
     y.append(0)
@@ -183,19 +184,19 @@ def init(npart):
             vy.append(velocity*np.cos((2*np.pi*j)/n))
             vz.append(0.0)
 
-    x[2:],y[2:],z[2:]=rotation(x[2:],y[2:],z[2:],0.0,1.0,0.0,60.0)
+    x[2:],y[2:],z[2:]=rotation(x[2:],y[2:],z[2:],1.0,0.0,0.0,60.0)
+
+    vx[2:],vy[2:],vz[2:]=rotation(vx[2:],vy[2:],vz[2:],1.0,0.0,0.0,60.0)
     #vx[0],vy[0],vz[0]=rotation([vx[0]],[vy[0]],[vz[0]],0.0,1.0,0.0,60.0)
-    vx[2:],vy[2:],vz[2:]=rotation(vx[2:],vy[2:],vz[2:],0.0,1.0,0.0,60.0)
 
 
-
-    x[2:],y[2:],z[2:]=rotation(x[2:],y[2:],z[2:],1.0,0.0,0.0,90.0)
-    vx[2:],vy[2:],vz[2:]=rotation(vx[2:],vy[2:],vz[2:],1.0,0.0,0.0,90.0)
+    #x[2:],y[2:],z[2:]=rotation(x[2:],y[2:],z[2:],1.0,0.0,0.0,90.0)
+    #vx[2:],vy[2:],vz[2:]=rotation(vx[2:],vy[2:],vz[2:],1.0,0.0,0.0,90.0)
 
 
 
     x[2:]=[p-Ra for p in x[2:]]
-    vz[2:]=[p+vel for p in vz[2:]]
+    vy[2:]=[p+vel for p in vy[2:]]
 
 
     for i in range(0,11):
@@ -210,16 +211,16 @@ def init(npart):
             y.append(r*np.sin((2*np.pi*j)/n))
             z.append(0.0)
 
-            vx.append(velocity*np.sin((2*np.pi*j)/n))
-            vy.append(-velocity*np.cos((2*np.pi*j)/n))
+            vx.append(-velocity*np.sin((2*np.pi*j)/n))
+            vy.append(velocity*np.cos((2*np.pi*j)/n))
             vz.append(0.0)
 
 
-    x[299:],y[299:],z[299:]=rotation(x[299:],y[299:],z[299:],0.0,1.0,0.0,15.0)
-    vx[299:],vy[299:],vz[299:]=rotation(vx[299:],vy[299:],vz[299:],0.0,1.0,0.0,15.0)
+    x[299:],y[299:],z[299:]=rotation(x[299:],y[299:],z[299:],1.0,0.0,0.0,15.0)
+    vx[299:],vy[299:],vz[299:]=rotation(vx[299:],vy[299:],vz[299:],1.0,0.0,0.0,15.0)
 
-    x[299:],y[299:],z[299:]=rotation(x[299:],y[299:],z[299:],1.0,0.0,0.0,90.0)
-    vx[299:],vy[299:],vz[299:]=rotation(vx[299:],vy[299:],vz[299:],1.0,0.0,0.0,90.0)
+    #x[299:],y[299:],z[299:]=rotation(x[299:],y[299:],z[299:],1.0,0.0,0.0,90.0)
+    #vx[299:],vy[299:],vz[299:]=rotation(vx[299:],vy[299:],vz[299:],1.0,0.0,0.0,90.0)
 
 
     #vx[1],vy[1],vz[1]=rotation([vx[1]],[vy[1]],[vz[1]],1.0,0.0,0.0,60.0)
@@ -229,7 +230,7 @@ def init(npart):
 
 
     x[299:]=[p+Ra for p in x[299:]]
-    vz[299:]=[p-vel for p in vz[299:]]
+    vy[299:]=[p-vel for p in vy[299:]]
     #print len(x),len(y),len(z)
 
     return (x,y,z,vx,vy,vz)
