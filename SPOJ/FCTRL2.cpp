@@ -33,8 +33,8 @@ void mulitply(const int& x, std::vector<int>& num)
 }
 
 std::vector<int> factorial(const int& n)
-{
-	std::vector<int> num;
+
+{	std::vector<int> num;
 	num.reserve(100);
 	num.push_back(1);
 
