@@ -41,7 +41,7 @@ int main()
 		{
 			int val;
 			std::cin>>val;
-			women.push_back(val);
+			women.push_back(val);int
 		}
 		std::sort(women.begin(),women.end());
 
