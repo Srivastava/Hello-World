@@ -121,20 +121,26 @@
 // 	return 0;
 // }
 
+struct Node
+{
+	int v;
+	int index;
+};
 
 class Graph
 {
 	int V;
-	std::list<int> *adj;
+	Node node;
+	std::list<Node> *adj;
 
-	void dfs(int v, bool visited[]);
-	bool isCycle(int v, bool visited[],int parent);
+	void dfs(Node node, bool visited[]);
+	bool isCycle(Node node, bool visited[],Node parent);
 
 public:
 	Graph(int V);
-	void addEdge(int v,int w);
-	bool isTree(int v);
-	void dfsPrint(int v);
+	void addEdge(Node n1,Node n2);
+	bool isTree(Node n1);
+	void dfsPrint(Node n1);
 	// void print()
 
 };
@@ -145,29 +151,29 @@ Graph::Graph(int V)
 	adj=new std::list<int>[V];
 }
 
-void Graph::addEdge(int v,int w)
+void Graph::addEdge(Node n1,Node n2)
 {
-	adj[v].push_back(w);
-	adj[w].push_back(v);
+	adj[n1.index].push_back(n2);
+	adj[n2.index].push_back(n1);
 }
 
-void Graph::dfs(int v, bool visited[])
+void Graph::dfs(Node n1, bool visited[])
 {
-	visited[v-1]=true;
-	std::cout<<v<<"*";
+	visited[n1.index]=true;
+	std::cout<<n1.v<<"*";
 
-	std::list<int>::iterator it;
+	std::list<Node>::iterator it;
 
-	for(it=adj[v-1].begin();it!=adj[v-1].end();++it)
+	for(it=adj[n1.index].begin();it!=adj[n1.index].end();++it)
 	{
-		if(!visited[*it])
+		if(!visited[*it.index])
 		{
 			dfs(*it,visited);
 		}
 	}
 }
 
-void Graph::dfsPrint(int v)
+void Graph::dfsPrint(Node n1)
 {
 	bool *visited=new bool[V];
 
@@ -179,26 +185,26 @@ void Graph::dfsPrint(int v)
 
 	std::cout<<V<<" ** "<<std::endl;
 
-	dfs(v,visited);
+	dfs(n1,visited);
 }
 
-bool Graph::isCycle(int v,bool visited[],int parent)
+bool Graph::isCycle(Node n1,bool visited[],Node parent)
 {
-	visited[v]=true;
+	visited[n1.index]=true;
 
-	std::list<int>::iterator it;
+	std::list<Node>::iterator it;
 
-	for(it=adj[v].begin();it!=adj[v].end();++it)
+	for(it=adj[n1.index].begin();it!=adj[n1.index].end();++it)
 	{
 		if(!visited[*it])
 		{
-			if(isCycle(*it,visited,v))
+			if(isCycle(*it,visited,n1))
 			{
 				return true;
 			}
 		}
 
-		else if(*it!=parent)
+		else if(*it.v!=parent.v)
 		{
 			return true;
 		}
@@ -206,7 +212,7 @@ bool Graph::isCycle(int v,bool visited[],int parent)
 	return false;
 }
 
-bool Graph::isTree(int v)
+bool Graph::isTree(Node n1)
 {
 	bool *visited=new bool[V];
 
@@ -216,7 +222,10 @@ bool Graph::isTree(int v)
 		visited[i]=false;
 	}
 	
-	if(isCycle(v,visited,-1))
+	Node parent;
+	parent.v=-1;
+	parent.index=-1;
+	if(isCycle(n1,visited,parent))
 	{
 		return false;
 	}
@@ -243,8 +252,13 @@ int main()
 	for(int i=0;i<E;++i)
 	{
 		int u,v;
+
 		std::cin>>u>>v;
 		
+		Node n1,n2;
+		n1.v=u;
+		n1.index=
+
 		if(i==0){lastV=u;}
 		g.addEdge(u,v);
 	}
