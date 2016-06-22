@@ -17,8 +17,16 @@
 
 std::string whoWins(const long long& a, int b)
 {
+	if(b==0)
+	{
+		return "Airborne wins.";
+	}
 
-	return "Wins";
+	else
+	{
+		return "Pagfloyd wins.";
+	}
+	
 }
 int main()
 {
