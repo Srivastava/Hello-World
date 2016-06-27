@@ -10,7 +10,7 @@
 long long nTri(const long long& level)
 {
 
-	return floor(level*(level+2)*(2*level+1)/8);
+	return (level*(level+2)*((2*level)+1)/8);
 }
 
 int main()
