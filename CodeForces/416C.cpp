@@ -55,13 +55,14 @@ ull maxVal(pvull& cp,const pvull& sp)
 		{
 			for(int j=sp.size()-1;j>=0;++j)
 			{
-				if(cp[i].first>sp[j])
+				if(cp[i].first>sp[j].first)
 				{
 					if(j!=sp.size()-1)
 					{
-						if(cp[i].first==sp[j])
+						if(cp[i].first==sp[j].first)
 						{
-							val+=cp.
+							val+=cp[i].first;
+							
 						}
 					}
 				}
