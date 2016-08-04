@@ -20,10 +20,12 @@ typedef std::vector<int> vi;
 typedef std::pair<ll,ll> pa;
 typedef std::vector<pa> vpa;
 
+typedef std::vector<vll> vvll;
+
 vpa sd;
 pa target;
 ll limit,limitX;
-
+/*
 ll solveUtil(pa curr,pa prev)
 {
 	ll l=0,r=0,t=0,b=0;
@@ -115,7 +117,10 @@ ll solve()
 {
 	ll ans =solveUtil(sd[0],std::make_pair(-1,-1));
 }
+*/
 
+
+vvll row,col;
 int main()
 {
 	ll n;
@@ -131,11 +136,12 @@ int main()
 		sd.push_back({x,y});
 	}
 
-	target=sd[n-1];
-	limit=std::max(std::abs(target.first+sd[0].first),std::abs(target.second+sd[0].second));
-	limit=std::min(limit,1000LL);
-	limitX=std::max(std::abs(target.first-sd[0].first),std::abs(target.second-sd[0].second));
-	std::cout<<solve()<<std::endl;
+
+	// target=sd[n-1];
+	// limit=std::max(std::abs(target.first+sd[0].first),std::abs(target.second+sd[0].second));
+	// limit=std::min(limit,1000LL);
+	// limitX=std::max(std::abs(target.first-sd[0].first),std::abs(target.second-sd[0].second));
+	// std::cout<<solve()<<std::endl;
 
 	return 0;
 }
