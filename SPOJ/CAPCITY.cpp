@@ -42,10 +42,8 @@ void tarjan(int u)
 
 	low[u]=num[u]=ticks++;
 
-	for(int i=0;i<g[u].size();++i)
+	for(int v:g[u])
 	{
-		int v = g[u][i];
-
 		if(num[v]==-1)
 		{
 			tarjan(v);
