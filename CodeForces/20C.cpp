@@ -135,10 +135,9 @@ int main()
 	return 0;
 }*/
 
-vpa g[100000+5];
-ll n,m;
 
-ll minIndex(vll& dist, vb& visited)
+
+/*ll minIndex(vll& dist, vb& visited)
 {
 	ll min=dist[0],index=0;
 	bool allvis=true;
@@ -229,7 +228,7 @@ int main()
 		else
 		{
 			g[u][v]<w ? g[u][v]=g[u][v]:g[u][v]=w,g[v][u]=w;
-		}*/
+		}
 	}
 
 
@@ -257,6 +256,98 @@ int main()
 	// std::cout<<solve(g)<<std::endl;
 	std::reverse(ansp.begin(),ansp.end());
 	std::copy(ansp.begin(),ansp.end(),std::ostream_iterator<ll>(std::cout," "));
+	std::cout<<std::endl;
+	return 0;
+}*/
+
+
+
+
+const ll inf = 1e15;
+
+struct edge
+{
+	int u,v,w;
+
+	edge(int _u,int _v,int _w)
+	{
+		u=_u;
+		v=_v;
+		w=_w;
+	}
+};
+
+std::vector<edge> g[100000+5];
+std::vector<ll> dist(100000+5,inf);
+
+std::vector<ll> par(100000+5,0);
+
+ll n,m;
+
+void dijkstra(int st)
+{
+	dist[st]=0;
+
+	std::priority_queue<pa,vpa,std::greater<pa> > pq;
+
+	pq.push(std::make_pair(dist[st],st));
+
+	while(!pq.empty())
+	{
+		ll u=pq.top().second,d = pq.top().first;
+		pq.pop();
+
+		if(d>dist[u]) continue;
+
+		for(int i=0;i<g[u].size();++i)
+		{
+			ll v=g[u][i].v;
+			ll w=g[u][i].w;
+
+			if(w+dist[u] < dist[v])
+			{
+				dist[v]=w+dist[u];
+				par[v]=u;
+				pq.push(std::make_pair(dist[v],v));
+			}
+		}
+
+	}
+}
+
+int main()
+{
+	// int n,m;
+	std::cin>>n>>m;
+
+	for(int i=0;i<m;++i)
+	{
+		ll u,v,w;
+		std::cin>>u>>v>>w;
+
+		g[u].push_back(edge(u,v,w));
+		g[v].push_back(edge(v,u,w));
+
+	}
+
+	dijkstra(1);
+
+	std::vector<int> ans;
+	ans.push_back(n);
+	if(dist[n]==inf){std::cout<<-1<<std::endl;return 0;}
+	else
+	{
+		int u=n;
+		while(u!=1)
+		{
+			u=par[u];
+			ans.push_back(u);
+		}
+	}
+
+
+	std::reverse(ans.begin(),ans.end());
+	std::copy(ans.begin(),ans.end(),std::ostream_iterator<ll>(std::cout," "));
 	std::cout<<std::endl;
 	return 0;
 }

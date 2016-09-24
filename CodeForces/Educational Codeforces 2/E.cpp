@@ -26,5 +26,17 @@ typedef std::vector<vll> vvll;
 
 int main()
 {
+	int n;
+	std::cin>>n;
+
+	vi c(n+1,0);
+
+	for(int i=1;i<=n;++i)
+	{
+		std::cin>>c[i];
+	}
+
+	
+
 	return 0;
 }

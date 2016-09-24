@@ -7,7 +7,7 @@
 #include <climits>
 #include <numeric>
 #include <queue>
-// #include <unordered_map>
+
 
 
 typedef long long ll;
@@ -37,12 +37,12 @@ int main()
 
 	vi sol(26,0);
 
-	// std::unordered_map<char,int> map;
+	
 	for(int i=0;i<str.size();++i)
 	{
 		int index= str[i]-'a';
 		sol[index]++;
-		// map[str[i]]++;
+		
 	}
 
 	std::string temp;
@@ -51,9 +51,9 @@ int main()
 	{
 		if(sol[c-'a']%2!=0)
 		{
-			std::string t(sol[c-'a'],c);
-			temp+=t;
-			// sol[c-'a']++;
+			
+			temp+=c;
+			
 		}
 	}
 	int size=temp.size();
@@ -62,41 +62,43 @@ int main()
 		sol[temp[size-i-1]-'a']--;
 		temp[size-i-1]=temp[i];
 		sol[temp[i]-'a']++;
-		i+=sol[temp[i]-'a'];
 	}
+	
 	char c;
 	if(size%2==0){c=temp[size/2-1];}
 	else{c=temp[size/2];}
-	// std::cout<<temp<<" temp "<<c<<std::endl;
 
-	size=str.size();int j=0;
-	for(int i=0;i<size/2+1;++i)
+	
+	int j=0; bool odd=false;
+	size=ans.size();
+
+	for(int i=0;i<26;++i)
 	{
-		int index = str[i]-'a';
-		// std::cout<<str[i]<<std::endl;
-		if(sol[index]%2==0 && sol[index]!=0)
-		{	
-			int k=sol[index]/2;
-			// std::cout<<k<<" "<<str[i]-'a'<<std::endl;
-			while(k>=1)
+		
+		if(sol[i]!=0)
+		{
+			int cnt=sol[i]/2;
+			if(sol[i]==1){ans[size/2]=i+'a';}
+			
+			int k=0;
+			while(k<cnt && j<size)
 			{
-				ans[j]=str[i];
-				ans[size-j-1]=str[i];
+				if(j==size/2){++j;continue;}
+				ans[j]=i+'a';
+				ans[size-j-1]=i+'a';
 				++j;
-				--k;
+				++k;
 			}
-			i+=sol[index]/2-1;
-			sol[index]=0;
+
+
 		}
-
+		if(sol[i]%2!=0 && sol[i]!=1)
+		{
+			ans[size/2]=i+'a';
+			odd=true;
+		}
 	}
-
-	// ans[size/2]=c;
-	if(size%2!=0){ans[size/2]=c;}
-	else
-	{
-		ans[size/2-1]=c;
-	}
+	
 	std::cout<<ans<<std::endl;
 	// std::copy(sol.begin(),sol.end(),std::ostream_iterator<int>(std::cout," "));
 	// std::cout<<std::endl;
