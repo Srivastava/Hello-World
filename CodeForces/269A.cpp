@@ -65,20 +65,25 @@ int main()
 	ll n;
 	std::cin>>n;
 
-	pvull sq;
-	sq.reserve(n);
+	int ans=0,max=0;
 
-	for(ll i=0;i<n;++i)
+	for(int i=0;i<n;++i)
 	{
-		ull val,val1;
-		std::cin>>val>>val1;
+		int k,a;
+		std::cin>>k>>a;
 
-		sq.push_back(std::make_pair(val,val1));
-	}	
-
- 	std::sort(sq.begin(), sq.end(), [](const std::pair<ull,ull> &left, const std::pair<ull,ull> &right) {return left.first > right.first;});
-
- 	std::cout<<maxLevel(sq)<<std::endl;
-
+		max=std::max(max,k);
+		int s=1;
+		int m=0;
+		while(s<a)
+		{
+			s*=4;
+			++m;
+		}
+		ans=std::max(ans,k+m);
+	}
+	
+	if(ans==max){++ans;}
+	std::cout<<ans<<std::endl;
 	return 0;
 }

@@ -119,6 +119,22 @@ ll solve()
 }
 */
 
+void dfs(int u,vpa& g,vb& visited)
+{
+	if(visited[u])
+	{
+		return;
+	}
+	int n=visited.size();
+	visited[u]=true;
+	for(int i=0;i<n;++i)
+	{
+		if(g[u].first==g[i].first || g[u].second==g[i].second)
+		{
+			dfs(i,g,visited);
+		}
+	}
+}
 
 vvll row,col;
 int main()
@@ -126,7 +142,7 @@ int main()
 	ll n;
 	std::cin>>n;
 
-	// vpa sd;
+	vpa sd;
 
 	for(int i=0;i<n;++i)
 	{
@@ -136,12 +152,19 @@ int main()
 		sd.push_back({x,y});
 	}
 
+	vb visited(n+1,false);
 
-	// target=sd[n-1];
-	// limit=std::max(std::abs(target.first+sd[0].first),std::abs(target.second+sd[0].second));
-	// limit=std::min(limit,1000LL);
-	// limitX=std::max(std::abs(target.first-sd[0].first),std::abs(target.second-sd[0].second));
-	// std::cout<<solve()<<std::endl;
+	int cnt=0;
 
+	for(int i=0;i<n;++i)
+	{
+		if(!visited[i])
+		{
+			dfs(i,sd,visited);
+			++cnt;
+		}
+	}
+
+	std::cout<<cnt-1<<std::endl;
 	return 0;
 }
