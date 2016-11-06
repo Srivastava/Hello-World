@@ -24,6 +24,7 @@ typedef std::vector<pa> vpa;
 typedef std::vector<vll> vvll;
 
 
+
 int main()
 {
 
@@ -36,20 +37,30 @@ int main()
 		return 0;
 	}
 	
-	if(n+1 > (k+1)*(k+2)/2)
+	if(n<=k){std::cout<<1<<std::endl;return 0;}
+
+	ll sum=1+(k*(k-1))/2;
+	if(sum<n){std::cout<<-1<<std::endl;return 0;}
+
+	ll l=1,r=k-1,m=0;
+
+	while(r-l>1)
 	{
-		std::cout<<-1<<std::endl;
-		return 0;
-	}
+		m=(l+r)>>1;
+		ll sum=1+((k-m)*(k-1+m))/2;
 
-	ll l=0,r=k;	
-	while(l<=r)
+		if(sum>=n){l=m;}
+		else{r=m;}
+	}
+	m=r;
+	sum=1+((k-m)*(k-1+m))/2;
+	if(sum>=n){std::cout<<k-m<<std::endl;}
+	else
 	{
-		ll m=l+(r-l)/2;
+		m=l;
+		sum=1+((k-m)*(k-1+m))/2;
+		if(sum>=n){std::cout<<k-m<<std::endl;}
 
-		if()
 	}
-
-	std::cout<<ans+1<<std::endl;
 	return 0;
 }
