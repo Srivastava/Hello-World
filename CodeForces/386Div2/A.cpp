@@ -26,8 +26,11 @@ typedef std::vector<vll> vvll;
 
 int main()
 {
-	int k,n;
-	std::cin>>k>>n;
-	
+	int a,b,c;
+	std::cin>>a>>b>>c;
+
+	int k=std::min(a,std::min(b/2,c/4));
+
+	std::cout<<7*k<<std::endl;
 	return 0;
 }

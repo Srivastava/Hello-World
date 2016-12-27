@@ -26,5 +26,20 @@ typedef std::vector<vll> vvll;
 
 int main()
 {
+	ll n,m,k;
+	std::cin>>n>>m>>k;
+
+	ll lane = std::ceil(k/(double)(2*m));
+
+	ll num=(lane-1)*m*2;
+
+	// std::cout<<num<<std::endl;
+
+	ll row=std::ceil((k-num)/2.0);
+
+	char c = k%2==0 ? 'R':'L';
+
+	std::cout<<lane<<" "<<row<<" "<<c<<std::endl;
+	return 0; 
 	return 0;
 }

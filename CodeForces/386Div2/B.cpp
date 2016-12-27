@@ -26,8 +26,30 @@ typedef std::vector<vll> vvll;
 
 int main()
 {
-	int k,n;
-	std::cin>>k>>n;
+	int n;
+	std::string str;
+	std::cin>>n>>str;
+
+	std::string odd="",even="";
+
+	for(int i=0;i<str.size();i+=2)
+	{
+		odd+=str[i];
+	}
+
+	for(int i=1;i<str.size();i+=2)
+	{
+		even+=str[i];
+	}
+
+	if(n%2==0){
+		std::reverse(odd.begin(),odd.end());
+		std::cout<<odd+even<<std::endl;
+	}
+	else{
+		std::reverse(even.begin(),even.end());
+		std::cout<<even+odd<<std::endl;
+	}
 	
 	return 0;
 }
